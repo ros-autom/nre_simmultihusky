@@ -1,0 +1,2 @@
+#!/bin/bash
+roslaunch nre_simmultihusky husky_empty_world_all.launch 
