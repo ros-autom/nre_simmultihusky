@@ -42,8 +42,11 @@
       <arg name="robot_name" value="NpsHusky1" />
       <arg name="ns" value="$(arg ns1)" />
     </include>
+
+e
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find nre_simmultihusky)/config/localization1.yaml" />
+    <param name="tf_prefix" value="" />
   </node>
 
   </group>
@@ -52,7 +55,7 @@
   <arg name="ns2" value="h2" />
   <group ns="$(arg ns2)">
     <param name="tf_prefix" value="h2_tf" />
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mydesc.gazebo.xacro'
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mydesc2.gazebo.xacro'
     laser_enabled:=$(arg laser_enabled)
     ur5_enabled:=$(arg ur5_enabled)
     kinect_enabled:=$(arg kinect_enabled)
@@ -64,24 +67,14 @@
     <arg name="robot_name" value="NpsHusky2" />
     <arg name="ns" value="$(arg ns2)" />
   </include>
+  
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find nre_simmultihusky)/config/localization2.yaml" />
+    <param name="tf_prefix" value="" />
   </node>
   </group>
 
-  <!--
-  <group ns="h2">
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find gazebotesting)/xacro/mydesc2.gazebo.xacro'
-    laser_enabled:=$(arg laser_enabled)
-    ur5_enabled:=$(arg ur5_enabled)
-    kinect_enabled:=$(arg kinect_enabled)
-    " />
-  <include file="$(find gazebotesting)/launch/one_husky.launch">
-    <arg name="init_pose" value="-x -2 -y -2 -z 0" />
-    <arg name="robot_name" value="NpsHusky2" />
-  </include>
-  </group>
-  -->
+
 
 <!--
 <node name="rviz" pkg="rviz" type="rviz" args="-d $(find husky_viz)/rviz/robot.rviz" output="screen"/>

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<!-- 
+A launch file for setting up control of a Husky.
+-->
+<launch>
+
+  <node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" />
+
+<!--******************************-->
+<!-- Gazebo -->
+<!--******************************-->
+<arg name="world_name" default="worlds/empty.world"/>
+<include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+  <arg name="paused" value="false"/>
+  <arg name="use_sim_time" value="true"/>
+  <arg name="gui" value="true"/>
+  <arg name="headless" value="false"/>
+  <arg name="debug" value="false"/>
+</include>
+
+<group ns="HUSK">
+<param name="tf_prefix" value="h1_tf" />
+<!--******************************-->
+<!-- Husky in Gazebo -->
+<!--******************************-->
+<arg name="laser_enabled" default="true"/>
+<arg name="ur5_enabled" default="false"/>
+<arg name="kinect_enabled" default="false"/>
+<param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mydesc.gazebo.xacro'
+  laser_enabled:=$(arg laser_enabled)
+  ur5_enabled:=$(arg ur5_enabled)
+  kinect_enabled:=$(arg kinect_enabled)
+  prefix:=HUSK
+  " />
+<node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
+      args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+<rosparam command="load" file="$(find nre_simmultihusky)/config/control.yaml" />
+<node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="husky_joint_publisher husky_velocity_controller --shutdown-timeout 3"/>
+
+<!-- Here we use remap to change the publication topic for the odometry -->
+<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+  <rosparam command="load" file="$(find nre_simmultihusky)/config/localization.yaml" />
+    <param name="tf_prefix" value="" />
+</node>
+
+</group>
+
+<!--******************************-->
+<!-- Debugging tools -->
+<!--******************************-->
+<!--
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find husky_viz)/rviz/robot.rviz" output="screen"/>
+-->
+
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find nre_simmultihusky)/rviz/robot.rviz" output="screen"/>
+<node name="rqt_topic" pkg="rqt_topic" type="rqt_topic" output="screen" />
+<node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
+<node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
+
+</launch>
