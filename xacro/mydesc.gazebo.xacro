@@ -14,7 +14,6 @@
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/$(arg prefix)</robotNamespace>
-      <!--<robotParam>/h1/robot_description</robotParam>-->
     </plugin>
   </gazebo>
 
