@@ -5,6 +5,7 @@ A launch file for setting up control of a Husky.
 -->
 <launch>
 
+
   <node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" />
 
 <!--******************************-->
@@ -20,33 +21,45 @@ A launch file for setting up control of a Husky.
   <arg name="debug" value="false"/>
 </include>
 
-<group ns="HUSK">
-<param name="tf_prefix" value="h1_tf" />
-<!--******************************-->
-<!-- Husky in Gazebo -->
-<!--******************************-->
-<arg name="laser_enabled" default="true"/>
-<arg name="ur5_enabled" default="false"/>
-<arg name="kinect_enabled" default="false"/>
-<param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mydesc.gazebo.xacro'
-  laser_enabled:=$(arg laser_enabled)
-  ur5_enabled:=$(arg ur5_enabled)
-  kinect_enabled:=$(arg kinect_enabled)
-  prefix:=HUSK
-  " />
-<node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
-      args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+<group ns="h1">
+  <!--******************************-->
+  <!-- Husky in Gazebo -->
+  <!--******************************-->
+  <param name="tf_prefix" value="h1_tf" />
+  <param name="namespace" value="h1" />
+  <arg name="laser_enabled" default="true"/>
+  <arg name="ur5_enabled" default="false"/>
+  <arg name="kinect_enabled" default="false"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mydesc.gazebo.xacro'
+					   laser_enabled:=$(arg laser_enabled)
+					   ur5_enabled:=$(arg ur5_enabled)
+					   kinect_enabled:=$(arg kinect_enabled)
+					   prefix:=h1
+					   " />
+  <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
+	args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+  
 
-<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  
+  <rosparam command="load" file="$(find nre_simmultihusky)/config/control.yaml" />
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="husky_joint_publisher husky_velocity_controller --shutdown-timeout 3"/>
+  
+  <!-- Here we use remap to change the publication topic for the odometry -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+    <rosparam command="load" file="$(find nre_simmultihusky)/config/localization.yaml" />
+  </node>
 
-<rosparam command="load" file="$(find nre_simmultihusky)/config/control.yaml" />
-<node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="husky_joint_publisher husky_velocity_controller --shutdown-timeout 3"/>
+ <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen">
+   <param name="link_name" value="h1_tf/base_link" />
+ </node>
 
-<!-- Here we use remap to change the publication topic for the odometry -->
-<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
-  <rosparam command="load" file="$(find nre_simmultihusky)/config/localization.yaml" />
-    <param name="tf_prefix" value="" />
-</node>
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find husky_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="husky_velocity_controller/cmd_vel"/>
+  </node>
+
 
 </group>
 

@@ -29,7 +29,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -66,6 +66,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         base_laser:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_laser_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -130,7 +135,7 @@ Visualization Manager:
           Value: true
       Name: RobotModel
       Robot Description: /h1/robot_description
-      TF Prefix: "h1_tf"
+      TF Prefix: h1_tf
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -329,7 +334,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: h1_tf/odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -381,5 +386,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1600
-  X: 0
-  Y: 27
+  X: -9
+  Y: 20
