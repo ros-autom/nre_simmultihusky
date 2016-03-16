@@ -15,9 +15,9 @@
   <!-- Put value on the parameter server in the group's namespace -->
   <param name="tf_prefix" value="$(arg namespace)_tf" />
   <!-- Initial pose - see "rosrun gazebo_ros spawn_model -h" for syntax -->
-  <arg name="initx" default="0" />
-  <arg name="inity" default="0" />
+  <arg name="initX" default="0" />
   <arg name="initY" default="0" />
+  <arg name="initYaw" default="0" />
   <arg name="laser_enabled" default="true"/>
   <arg name="ur5_enabled" default="false"/>
   <arg name="kinect_enabled" default="false"/>
@@ -32,7 +32,7 @@
 					   " />
   <!-- Note we set the "name" of the model in Gazebo using the namespace -->
   <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
-	args="-x $(arg initx) -y $(arg inity) -Y $(arg initY) -unpause -urdf -param robot_description -model Husky_$(arg namespace)"/>
+	args="-x $(arg initX) -y $(arg initY) -Y $(arg initYaw) -unpause -urdf -param robot_description -model Husky_$(arg namespace)"/>
 
   <!-- Start the state publisher node in the namespace - uses the 
        joint states from gazebo
@@ -60,14 +60,14 @@
        of reference.
   <node pkg="fake_localization" type="fake_localization" name="fake_localization">
     <param name="odom_frame_id" value="$(arg tfpre)/odom" />
-    <param name="delta_x" value="$(arg initx)" />
-    <param name="delta_y" value="$(arg inity)" />
-    <param name="delta_yaw" value="$(arg initY)" />
+    <param name="delta_x" value="$(arg initX)" />
+    <param name="delta_y" value="$(arg initY)" />
+    <param name="delta_yaw" value="$(arg initYaw)" />
     <param name="base_frame_id" value="$(arg tfpre)/base_link" />
   </node>
   -->
   <!-- Or we could just set this as a static offset -->
-  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initx) $(arg inity) 0 0 0 $(arg initY) /map /$(arg tfpre)/odom 50" />
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" />
  
      
   <!-- Twister server for rviz control-->

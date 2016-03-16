@@ -24,21 +24,20 @@ A launch file for setting up control of a Husky.
 <group ns="h1">
   <include file="$(find nre_simmultihusky)/launch/husky.launch">
     <arg name="namespace" value="h1" />
-    <arg name="initx" value="2" />
-    <arg name="inity" value="2" />
-    <arg name="initY" value="0" />
+    <arg name="initX" value="2" />
+    <arg name="initY" value="2" />
+    <arg name="initYaw" value="0" />
   </include>
 </group>
 
 <group ns="h2">
   <include file="$(find nre_simmultihusky)/launch/husky.launch">
     <arg name="namespace" value="h2" />
-    <arg name="initx" value="-3" />
-    <arg name="inity" value="-3" />
-    <arg name="initY" value="3.14" />
+    <arg name="initX" value="-3" />
+    <arg name="initY" value="-3" />
+    <arg name="initYaw" value="3.14" />
   </include>
 </group>
-
 
 
 <!--******************************-->
