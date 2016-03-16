@@ -1,36 +1,15 @@
 <?xml version="1.0"?>
-
-<!-- 
-A launch file for setting up control of a Husky.
--->
 <launch>
-
-
-  <node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" />
-
-
-<!-- Gazebo -->
-<arg name="world_name" default="worlds/empty.world"/>
-<include file="$(find gazebo_ros)/launch/empty_world.launch">
-  <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
-  <arg name="paused" value="false"/>
-  <arg name="use_sim_time" value="true"/>
-  <arg name="gui" value="true"/>
-  <arg name="headless" value="false"/>
-  <arg name="debug" value="false"/>
-</include>
-
 <!--
   The simulated Husky and all the associated nodes (control, estimation, etc.) 
   are wrapped in a namespace using a group tag.  The tf prefix is generated
   using the namespace
 -->
 
-<group ns="h1">
-  <!--******************************-->
+ <!--******************************-->
   <!-- Husky in Gazebo -->
   <!--******************************-->
-  <arg name="namespace" default="h1" />
+  <arg name="namespace" default="h0" />
   <!-- Generate the tf_prefix from the namespace -->
   <arg name="tfpre" default="$(arg namespace)_tf" />
   <!-- Put value on the parameter server in the group's namespace -->
@@ -51,6 +30,7 @@ A launch file for setting up control of a Husky.
 					   nsp:=$(arg namespace)
 					   tfpre:=$(arg tfpre)
 					   " />
+  <!-- Note we set the "name" of the model in Gazebo using the namespace -->
   <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
 	args="-x $(arg initx) -y $(arg inity) -Y $(arg initY) -unpause -urdf -param robot_description -model Husky_$(arg namespace)"/>
 
@@ -77,7 +57,7 @@ A launch file for setting up control of a Husky.
 
   <!-- Fake localization: Uses the ground truth odometry from the 
        P3D Gazebo plugin. This is necessary to provide a global frame
-       of reference.-->
+       of reference.
   <node pkg="fake_localization" type="fake_localization" name="fake_localization">
     <param name="odom_frame_id" value="$(arg tfpre)/odom" />
     <param name="delta_x" value="$(arg initx)" />
@@ -85,6 +65,10 @@ A launch file for setting up control of a Husky.
     <param name="delta_yaw" value="$(arg initY)" />
     <param name="base_frame_id" value="$(arg tfpre)/base_link" />
   </node>
+  -->
+  <!-- Or we could just set this as a static offset -->
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initx) $(arg inity) 0 0 0 $(arg initY) /map /$(arg tfpre)/odom 50" />
+ 
      
   <!-- Twister server for rviz control-->
  <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen">
@@ -96,15 +80,4 @@ A launch file for setting up control of a Husky.
     <rosparam command="load" file="$(find husky_control)/config/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="husky_velocity_controller/cmd_vel"/>
   </node>
-</group>
-
-<!--******************************-->
-<!-- Debugging tools -->
-<!--******************************-->
-
-<node name="rviz" pkg="rviz" type="rviz" args="-d $(find nre_simmultihusky)/rviz/monohusky.rviz" output="screen"/>
-<node name="rqt_topic" pkg="rqt_topic" type="rqt_topic" output="screen" />
-<node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
-<node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
-
 </launch>

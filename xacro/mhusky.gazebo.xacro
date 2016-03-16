@@ -12,9 +12,16 @@ input arguments and then propogated appropriately.
   <xacro:arg name="nsp" default="h0" />
   <xacro:arg name="tfpre" default="h0_tf" />
   
-
   <xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro" />
   <xacro:include filename="$(find husky_gazebo)/urdf/accessories/kinect_camera.gazebo.xacro"/>
+  <gazebo>
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <frameName>map</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>base_pose_ground_truth</topicName>
+      <updateRate>30.0</updateRate>
+    </plugin>
+  </gazebo>
 
   <gazebo>
     <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
