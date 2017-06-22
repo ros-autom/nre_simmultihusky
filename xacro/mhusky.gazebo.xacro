@@ -61,9 +61,12 @@ input arguments and then propogated appropriately.
       <robotNamespace>/$(arg nsp)</robotNamespace>
     </plugin>
   </gazebo>
-  
+
+  <xacro:if value="$(arg kinect_enabled)">
+      <xacro:kinect_camera_gazebo prefix="camera"/>
+    </xacro:if>
   <xacro:husky_robot />
   
-  <xacro:husky_robot_gazebo />
+
   
 </robot>

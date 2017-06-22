@@ -9,11 +9,15 @@
  <!--******************************-->
   <!-- Husky in Gazebo -->
   <!--******************************-->
-  <arg name="namespace" default="h0" />
+  <arg name="namespace" default="husky" />
   <!-- Generate the tf_prefix from the namespace -->
   <arg name="tfpre" default="$(arg namespace)_tf" />
   <!-- Put value on the parameter server in the group's namespace -->
+  
+  
   <param name="tf_prefix" value="$(arg namespace)_tf" />
+  
+  
   <!-- Initial pose - see "rosrun gazebo_ros spawn_model -h" for syntax -->
   <arg name="initX" default="0" />
   <arg name="initY" default="0" />
@@ -24,11 +28,7 @@
   <!-- The robot description tells Gazebo how to simulate
        the IMU, GPS and ground truth -->
   <param name="robot_description" command="$(find xacro)/xacro.py '$(find nre_simmultihusky)/xacro/mhusky.gazebo.xacro'
-					   laser_enabled:=$(arg laser_enabled)
-					   ur5_enabled:=$(arg ur5_enabled)
-					   kinect_enabled:=$(arg kinect_enabled)
-					   nsp:=$(arg namespace)
-					   tfpre:=$(arg tfpre)
+ laser_enabled:=$(arg laser_enabled) ur5_enabled:=$(arg ur5_enabled) kinect_enabled:=$(arg kinect_enabled) nsp:=$(arg namespace) tfpre:=$(arg tfpre)
 					   " />
   <!-- Note we set the "name" of the model in Gazebo using the namespace -->
   <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
@@ -66,9 +66,39 @@
     <param name="base_frame_id" value="$(arg tfpre)/base_link" />
   </node>
   -->
+<group if="$(arg kinect_enabled)">
+
+    <!-- Include poincloud_to_laserscan if simulated Kinect is attached -->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
+
+        <remap from="cloud_in" to="camera/depth/points"/>
+        <remap from="scan" to="camera/scan"/>
+        <rosparam>
+            target_frame: base_link # Leave empty to output scan in the pointcloud frame
+            tolerance: 1.0
+            min_height: 0.05
+            max_height: 1.0
+
+            angle_min: -0.52 # -30.0*M_PI/180.0
+            angle_max: 0.52 # 30.0*M_PI/180.0
+            angle_increment: 0.005 # M_PI/360.0
+            scan_time: 0.3333
+            range_min: 0.45
+            range_max: 4.0
+            use_inf: true
+
+            # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+            # 0 : Detect number of cores
+            # 1 : Single threaded
+            # 2->inf : Parallelism level
+            concurrency_level: 1
+        </rosparam>
+    </node>
+
+  </group>
+
   <!-- Or we could just set this as a static offset -->
   <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" />
- 
      
   <!-- Twister server for rviz control-->
  <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen">
