@@ -22,7 +22,7 @@ A launch file for setting up control of a Husky.
 
 
 <group ns="h1">
-  <include file="$(find nre_simmultihusky)/launch/mv_husky.launch">
+  <include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
     <arg name="namespace" value="h1" />
     <arg name="initX" value="4" />
     <arg name="initY" value="4" />
@@ -32,7 +32,7 @@ A launch file for setting up control of a Husky.
 </group>
 
 <group ns="h2">
-  <include file="$(find nre_simmultihusky)/launch/mv_husky.launch">
+  <include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
     <arg name="namespace" value="h2" />
     <arg name="initX" value="1" />
     <arg name="initY" value="3" />

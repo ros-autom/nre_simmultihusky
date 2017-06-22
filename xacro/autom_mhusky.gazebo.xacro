@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!-- 
+Husky definition for Gazebo simultion suitable for multi-robot sim.
+Note the namespace (nsp) and tf_prefix (tfpre) are provided as 
+input arguments and then propogated appropriately.
+-->
+
+<robot name="husky_robot_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="laser_enabled" default="true" />
+  <xacro:arg name="ur5_enabled" default="false" />
+  <xacro:arg name="kinect_enabled" default="false" />
+  <xacro:arg name="nsp" default="h0" />
+  <xacro:arg name="tfpre" default="h0_tf" />
+  
+  <xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro" />
+  <xacro:include filename="$(find husky_gazebo)/urdf/accessories/kinect_camera.gazebo.xacro"/>
+  <gazebo>
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <frameName>map</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>base_pose_ground_truth</topicName>
+      <updateRate>30.0</updateRate>
+    </plugin>
+  </gazebo>
+  
+<!-- multi laser_scan plugin-->
+
+<xacro:if value="$(arg laser_enabled)">
+<!-- Hokuyo Laser scanner-->
+  <property name="hokuyo_size" value="0.05"/>
+
+ <!--hokuyo-->
+
+  <link name="$(arg nsp)_hokuyo_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+	<mesh filename="package://mvrobot_description/meshes/hokuyo.dae"/>
+        <box size="${hokuyo_size} ${hokuyo_size} ${hokuyo_size}"/>
+	</geometry>
+      <material name="Blue" />
+    </visual>
+  </link>
+
+  <joint name="$(arg nsp)_hokuyo_joint" type="fixed">
+    <origin xyz="${base_x_size/3} 0 ${base_z_size*1.17}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="$(arg nsp)_hokuyo_link" />
+  </joint>
+	
+	
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+ 
+ <!--Hokuyo-->
+  <gazebo reference="hokuyo_link">
+    <material>Gazebo/Black</material>
+    <turnGravityOff>false</turnGravityOff>
+    <sensor type="ray" name="head_hokuyo_sensor">
+      <pose>$ 0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>50</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.570796</min_angle>
+            <max_angle>1.570796</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.1</resolution>
+        </range>
+	 <noise>
+          <type>gaussian</type>
+         
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/$(arg nsp)_scan</topicName>
+        <frameName>$(arg nsp)_hokuyo_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</xacro:if>
+
+
+  <gazebo>
+    <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
+      <robotNamespace>/$(arg nsp)</robotNamespace>
+      <frameId>$(arg tfpre)/base_link</frameId>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>imu/data</topicName>
+      <accelDrift>0.005 0.005 0.005</accelDrift>
+      <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+      <rateDrift>0.005 0.005 0.005 </rateDrift>
+      <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+      <headingDrift>0.005</headingDrift>
+      <headingGaussianNoise>0.005</headingGaussianNoise>
+    </plugin>
+  </gazebo>
+  
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>40</updateRate>
+      <robotNamespace>/$(arg nsp)</robotNamespace>
+      <frameId>$(arg tfpre)/base_link</frameId>
+      <bodyName>base_link</bodyName>
+      <topicName>navsat/fix</topicName>
+      <velocityTopicName>navsat/vel</velocityTopicName>
+      <referenceLatitude>49.9</referenceLatitude>
+      <referenceLongitude>8.9</referenceLongitude>
+      <referenceHeading>0</referenceHeading>
+      <referenceAltitude>0</referenceAltitude>
+      <drift>0.0001 0.0001 0.0001</drift>
+    </plugin>
+  </gazebo>
+
+  <!-- Gazebo plugin for ROS Control -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/$(arg nsp)</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <xacro:if value="$(arg kinect_enabled)">
+      <xacro:kinect_camera_gazebo prefix="camera"/>
+    </xacro:if>
+  <xacro:husky_robot />
+  
+
+  
+</robot>
