@@ -25,7 +25,7 @@ Panels:
         - /Map1
         - /Map1/Position1
       Splitter Ratio: 0.494924009
-    Tree Height: 818
+    Tree Height: 843
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -119,16 +119,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        h1_hokuyo_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        hokuyo_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         imu_link:
           Alpha: 1
           Show Axes: false
@@ -183,8 +173,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        h1/odom:
-          Value: true
         h1_tf/base_footprint:
           Value: true
         h1_tf/base_laser:
@@ -202,10 +190,6 @@ Visualization Manager:
         h1_tf/front_left_wheel_link:
           Value: true
         h1_tf/front_right_wheel_link:
-          Value: true
-        h1_tf/h1_hokuyo_link:
-          Value: true
-        h1_tf/hokuyo_link:
           Value: true
         h1_tf/imu_link:
           Value: true
@@ -245,10 +229,6 @@ Visualization Manager:
           Value: true
         h2_tf/front_right_wheel_link:
           Value: true
-        h2_tf/h2_hokuyo_link:
-          Value: true
-        h2_tf/hokuyo_link:
-          Value: true
         h2_tf/imu_link:
           Value: true
         h2_tf/inertial_link:
@@ -278,8 +258,6 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          h1/odom:
-            {}
           h1_tf/odom:
             h1_tf/base_link:
               h1_tf/base_footprint:
@@ -289,10 +267,6 @@ Visualization Manager:
               h1_tf/front_left_wheel_link:
                 {}
               h1_tf/front_right_wheel_link:
-                {}
-              h1_tf/h1_hokuyo_link:
-                {}
-              h1_tf/hokuyo_link:
                 {}
               h1_tf/imu_link:
                 {}
@@ -325,10 +299,6 @@ Visualization Manager:
               h2_tf/front_left_wheel_link:
                 {}
               h2_tf/front_right_wheel_link:
-                {}
-              h2_tf/h2_hokuyo_link:
-                {}
-              h2_tf/hokuyo_link:
                 {}
               h2_tf/imu_link:
                 {}
@@ -424,7 +394,7 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.0299999993
           Style: Flat Squares
-          Topic: /h2_scan
+          Topic: /h1/scan
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
@@ -454,7 +424,7 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.0299999993
           Style: Flat Squares
-          Topic: /h1_scan
+          Topic: /h2/scan
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
@@ -699,16 +669,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        h2_hokuyo_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        hokuyo_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         imu_link:
           Alpha: 1
           Show Axes: false
@@ -799,24 +759,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 62.5280914
+      Distance: 39.6302261
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -2.79308248
-        Y: 10.7870703
-        Z: 4.6087079
+        X: -0.370688438
+        Y: 1.59311926
+        Z: -1.26762569
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.56979632
+      Pitch: 0.909796178
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.6722188
+      Yaw: 4.66222429
     Saved: ~
 Window Geometry:
   Displays:
@@ -824,7 +784,7 @@ Window Geometry:
   Height: 1056
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000016a000003c1fc0200000005fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000041000003c1000000dd00ffffff000000010000010f000002ddfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000043000002dd000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a00000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000005cf000003c100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000016a000003dafc0200000005fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000028000003da000000dd00ffffff000000010000010f000002ddfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000043000002dd000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a00000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000005cf000003da00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

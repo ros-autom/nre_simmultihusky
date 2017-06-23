@@ -12,7 +12,7 @@ A launch file for setting up control of a Husky.
 <!-- Gazebo -->
 <arg name="world_name" default="worlds/empty.world"/>
 <include file="$(find gazebo_ros)/launch/empty_world.launch">
-  <arg name="world_name" value="$(find husky_gazebo)/worlds/clearpath_playpen2.world"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+  <arg name="world_name" value="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
   <arg name="paused" value="false"/>
   <arg name="use_sim_time" value="true"/>
   <arg name="gui" value="true"/>
@@ -23,7 +23,7 @@ A launch file for setting up control of a Husky.
 
 <group ns="h1">
   <include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
-    <arg name="namespace" value="h1" />
+    <arg name="robot_namespace" value="h1" />
     <arg name="initX" value="4" />
     <arg name="initY" value="4" />
     <arg name="laser_enabled" value="true"/>
@@ -33,7 +33,7 @@ A launch file for setting up control of a Husky.
 
 <group ns="h2">
   <include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
-    <arg name="namespace" value="h2" />
+    <arg name="robot_namespace" value="h2" />
     <arg name="initX" value="1" />
     <arg name="initY" value="3" />
     <arg name="initYaw" value="0" />

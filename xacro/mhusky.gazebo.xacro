@@ -7,7 +7,7 @@ input arguments and then propogated appropriately.
 
 <robot name="husky_robot_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:arg name="laser_enabled" default="true" />
-  <xacro:arg name="ur5_enabled" default="false" />
+  <!--xacro:arg name="ur5_enabled" default="false" /-->
   <xacro:arg name="kinect_enabled" default="false" />
   <xacro:arg name="nsp" default="h0" />
   <xacro:arg name="tfpre" default="h0_tf" />
@@ -16,7 +16,7 @@ input arguments and then propogated appropriately.
   <xacro:include filename="$(find husky_gazebo)/urdf/accessories/kinect_camera.gazebo.xacro"/>
   <gazebo>
     <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
-      <frameName>map</frameName>
+      <frameName>map</frameName>s
       <bodyName>base_link</bodyName>
       <topicName>base_pose_ground_truth</topicName>
       <updateRate>30.0</updateRate>
