@@ -1,87 +1,142 @@
 <?xml version="1.0"?>
-
-<!-- 
-A launch file for setting up control of a Husky.
--->
 <launch>
 
+	<!--node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" /-->
 
-  <node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" />
 
-
-<!-- Gazebo -->
-<arg name="world_name" default="worlds/empty.world"/>
-<include file="$(find gazebo_ros)/launch/empty_world.launch">
-  <arg name="world_name" value="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
-  <arg name="paused" value="false"/>
-  <arg name="use_sim_time" value="true"/>
-  <arg name="gui" value="true"/>
-  <arg name="headless" value="false"/>
-  <arg name="debug" value="false"/>
-</include>
-
+	<!-- Gazebo -->
+	<arg name="world_name" default="worlds/empty.world"/>
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
 
 
 
-<group ns="robot_0">
-  <include file="$(find nre_simmultihusky)/launch/husky.launch">
-  
-  <!--node name="R0_MapAlign" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /map /robot_0 100"/-->
-  
-    <arg name="namespace" value="robot_0" />
-    <param name="robot_id" value="1" />
-    <arg name="initX" value="2" />
-    <arg name="initY" value="2" />
-    <arg name="initYaw" value="0" />
-   </include>
-   
-  <param name="tf_prefix" type="string" value="robot_0"/>
-    <rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
-    
-    <node name="Mapper" pkg="nav2d_karto" type="mapper">
-        <remap from="scan" to="base_scan"/>
-        <remap from="karto_in" to="/shared_scans_r1"/>
-        <remap from="karto_out" to="/shared_scans_r2"/>
-        <rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
-    </node>
-  
-</group>
-
-<group ns="robot_1">
-  <include file="$(find nre_simmultihusky)/launch/husky.launch">
-  
-  <!--node name="R1_MapAlign" pkg="tf" type="static_transform_publisher" args="40 0 0 0 0 0 /map /robot_1 100"/-->
-  
-    <arg name="namespace" value="robot_1" />
-      <param name="robot_id" value="2" />
-    <arg name="initX" value="-3" />
-    <arg name="initY" value="-3" />
-    <arg name="initYaw" value="3.14" />
-    <arg name="laser_enabled" value="false"/>
-    <arg name="kinect_enabled" value="true"/>
-  
-   </include>
-   
-  <param name="tf_prefix" type="string" value="robot_1"/>
-    <rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
-  <node name="Mapper" pkg="nav2d_karto" type="mapper">
-        <remap from="scan" to="base_scan"/>
-        <remap from="karto_in" to="/shared_scans_r2"/>
-        <remap from="karto_out" to="/shared_scans_r1"/>
-        <rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
-    </node>
-  
-</group>
 
 
-<!--******************************-->
-<!-- Debugging tools -->
-<!--******************************-->
+	<node name="R0_MapAlign" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /map /robot_1_tf/map 100"/>
+	<node name="R1_MapAlign" pkg="tf" type="static_transform_publisher" args="40 0 0 0 0 0 /map /robot_2_tf/map 100"/>
 
-<!--node name="RVIZ" pkg="rviz" type="rviz" args=" -d $(find nav2d_tutorials)/param/tutorial4.rviz" output="screen"/-->
-<node name="rviz" pkg="rviz" type="rviz" args="-d $(find nre_simmultihusky)/rviz/duohusky.rviz" output="screen"/>
-<node name="rqt_topic" pkg="rqt_topic" type="rqt_topic" output="screen" />
-<node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
-<node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
+	<!--group ns="robot_1">
+	
+		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
+			<arg name="robot_namespace" value="robot_1" />
+			<arg name="initX" value="0" />
+			<arg name="initY" value="0" />
+			<arg name="laser_enabled" value="true"/>
+			<arg name="initYaw" value="0" />
+		</include>
+
+		<param name="robot_id" value="1" />
+		<param name ="laser_frame" value="top_plate_link"/>
+		<param name="map_frame" value="map"/>
+		<param name="map_topic" value="map"/>
+		<param name="odometry_frame" value="odom"/>
+		<param name="robot_frame" value="base_link"/>
+		<param name="map_service" value= "static_map"/>
+		<param name="min_map_size" value="100"/>
+		<param name="laser_topic" value="scan"/>
+		<param name="offset_frame" value="offset"/-->
+		<!--param name="tf_prefix" type="string" value="robot_1_tf"/-->
+		<!--<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>-->
+		
+		
+		<!--param name="laser_topic" value="scan" />
+
+		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen" -->
+			<!--remap from="scan" to="base_scan"/>
+			<remap from="karto_in" to="/shared_scans_r2"/>
+			<remap from="karto_out" to="/shared_scans_r1"/>
+			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+		</node>
+
+	</group-->
+	
+	
+	<group ns="robot_2">
+	
+		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
+			<arg name="robot_namespace" value="robot_2" />
+			<arg name="initX" value="1" />
+			<arg name="initY" value="3" />
+			<arg name="laser_enabled" value="true"/>
+			<arg name="initYaw" value="0" />
+		</include>
+
+		<param name="robot_id" value="2" />
+		<param name ="laser_frame" value="base_laser_mount"/>
+		<param name="map_frame" value="map"/>
+		<param name="map_topic" value="map"/>
+		<param name="odometry_frame" value="odom"/>
+		<param name="robot_frame" value="base_link"/>
+		<param name="map_service" value= "static_map"/>
+		<param name="min_map_size" value="100"/>
+
+		<param name="offset_frame" value="offset"/>
+		<param name="tf_prefix" type="string" value="robot_2_tf"/>
+
+		
+		
+		<param name="laser_topic" value="scan" />
+
+		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
+		<!--remap from="robot_1/scan" to="robot_1/base_scan"/-->
+					<!--remap from="scan" to="base_scan"/-->
+			<remap from="karto_in" to="/shared_scans_r1"/>
+			<remap from="karto_out" to="/shared_scans_r2"/>
+			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+		</node>
+
+	</group>
+	
+	
+	
+	<!--group ns="robot_2">
+		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
+			<arg name="robot_namespace" value="robot_2" />
+			<arg name="initX" value="1" />
+			<arg name="initY" value="3" />
+			<arg name="laser_enabled" value="true"/>
+			<arg name="initYaw" value="0" />
+		</include-->
+
+		<!--param name="robot_id" value="1" />
+		<param name="tf_prefix" type="string" value="robot_0"/>
+		<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/-->
+			<!--param name="robot_id" value="2" />
+		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen" >
+
+			<remap from="/scan" to="base_scan"/>
+			<remap from="karto_in" to="/shared_scans_r1"/>
+			<remap from="karto_out" to="/shared_scans_r2"/>
+			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+		</node>
+	</group-->
+	
+	
+	<!--group ns="robot_1">
+		
+		<param name="tf_prefix" type="string" value="robot_1"/>
+		<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
+
+
+		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
+			<remap from="scan" to="base_scan"/>
+			<remap from="karto_in" to="/shared_scans_r1"/>
+			<remap from="karto_out" to="/shared_scans_r2"/>
+			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+		</node>
+
+	</group-->
+
+	<!-- RVIZ to view the visualization -->
+	<node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
+	<node name="RVIZ" pkg="rviz" type="rviz" args=" -d $(find nav2d_tutorials)/param/tutorial4.rviz" />
 
 </launch>
+

@@ -9,7 +9,7 @@
  <!--******************************-->
   <!-- Husky in Gazebo -->
   <!--******************************-->
-  <arg name="robot_namespace" default="husky" />
+  <arg name="robot_namespace" default="/" />
   <!-- Generate the tf_prefix from the robot_namespace -->
   <arg name="tfpre" default="$(arg robot_namespace)_tf" />
   <!-- Put value on the parameter server in the group's robot_namespace -->
@@ -24,8 +24,8 @@
   <arg name="initYaw" default="0" />
   <arg name="laser_enabled" default="true"/>
   <arg name="ur5_enabled" default="false"/>
-  <arg name="kinect_enabled" default="true"/>
-  <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="kinect_enabled" default="false"/>
+
   <!-- The robot description tells Gazebo how to simulate
        the IMU, GPS and ground truth -->
   
@@ -35,14 +35,12 @@
     robot_namespace:=$(arg robot_namespace)
     laser_enabled:=$(arg laser_enabled)
     kinect_enabled:=$(arg kinect_enabled)
-    urdf_extras:=$(arg urdf_extras)
+
     " />
   
   
   
-  <!--param name="robot_description" command="$(find xacro)/xacro.py '$(find husky_description)/urdf/husky.urdf.xacro'
- laser_enabled:=$(arg laser_enabled) kinect_enabled:=$(arg kinect_enabled) urdf_extras:=$(arg urdf_extras) robot_namespace:=$(arg robot_namespace) tfpre:=$(arg tfpre)
-					   " /-->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find husky_description)/urdf/husky.urdf.xacro' laser_enabled:=$(arg laser_enabled) kinect_enabled:=$(arg kinect_enabled) robot_namespace:=$(arg robot_namespace) tfpre:=$(arg tfpre)" />
   <!-- Note we set the "name" of the model in Gazebo using the robot_namespace -->
   <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
 	args="-x $(arg initX) -y $(arg initY) -Y $(arg initYaw) -unpause -urdf -param robot_description -model Husky_$(arg robot_namespace)"/>
@@ -111,7 +109,7 @@
   </group>
 
   <!-- Or we could just set this as a static offset -->
-  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" />
+  <!--node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" /-->
      
   <!-- Twister server for rviz control-->
  <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen">
