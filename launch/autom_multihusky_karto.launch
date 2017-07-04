@@ -22,8 +22,9 @@
 	<node name="R0_MapAlign" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /map /robot_1_tf/map 100"/>
 	<node name="R1_MapAlign" pkg="tf" type="static_transform_publisher" args="40 0 0 0 0 0 /map /robot_2_tf/map 100"/>
 
-	<!--group ns="robot_1">
+	<group ns="robot_1">
 	
+
 		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
 			<arg name="robot_namespace" value="robot_1" />
 			<arg name="initX" value="0" />
@@ -33,29 +34,31 @@
 		</include>
 
 		<param name="robot_id" value="1" />
-		<param name ="laser_frame" value="top_plate_link"/>
+		<param name ="laser_frame" value="hokuyo_link"/>
 		<param name="map_frame" value="map"/>
 		<param name="map_topic" value="map"/>
 		<param name="odometry_frame" value="odom"/>
 		<param name="robot_frame" value="base_link"/>
 		<param name="map_service" value= "static_map"/>
 		<param name="min_map_size" value="100"/>
-		<param name="laser_topic" value="scan"/>
-		<param name="offset_frame" value="offset"/-->
-		<!--param name="tf_prefix" type="string" value="robot_1_tf"/-->
+		<param name="laser_topic" value="robot_1/scan"/>
+		<param name="offset_frame" value="offset"/>
+		<param name="tf_prefix" type="string" value="robot_1_tf"/>
 		<!--<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>-->
+		<!--<arg name="initX" value="3"/> -->
+		<!--<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /robot_1_tf/odom 100" />-->
+			
 		
 		
-		<!--param name="laser_topic" value="scan" />
 
-		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen" -->
-			<!--remap from="scan" to="base_scan"/>
+		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen" >
+			<!--<remap from="scan" to="robot_1/scan"/>-->
 			<remap from="karto_in" to="/shared_scans_r2"/>
 			<remap from="karto_out" to="/shared_scans_r1"/>
 			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
 		</node>
 
-	</group-->
+	</group>
 	
 	
 	<group ns="robot_2">
@@ -69,7 +72,7 @@
 		</include>
 
 		<param name="robot_id" value="2" />
-		<param name ="laser_frame" value="base_laser_mount"/>
+		<param name ="laser_frame" value="hokuyo_link"/>
 		<param name="map_frame" value="map"/>
 		<param name="map_topic" value="map"/>
 		<param name="odometry_frame" value="odom"/>
@@ -82,10 +85,10 @@
 
 		
 		
-		<param name="laser_topic" value="scan" />
+		<param name="laser_topic" value="robot_2/scan" />
 
 		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
-		<!--remap from="robot_1/scan" to="robot_1/base_scan"/-->
+		<remap from="robot_1/scan" to="robot_1/base_scan"/>
 					<!--remap from="scan" to="base_scan"/-->
 			<remap from="karto_in" to="/shared_scans_r1"/>
 			<remap from="karto_out" to="/shared_scans_r2"/>

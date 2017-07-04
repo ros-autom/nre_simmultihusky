@@ -6,7 +6,7 @@ A launch file for setting up control of a Husky.
 <launch>
 
 
-  <node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" />
+  <!--node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" /-->
 
 
 <!-- Gazebo -->
@@ -29,6 +29,7 @@ A launch file for setting up control of a Husky.
     <arg name="laser_enabled" value="true"/>
     <arg name="initYaw" value="0" />
   </include>
+ 
 </group>
 
 <group ns="h2">
@@ -48,7 +49,7 @@ A launch file for setting up control of a Husky.
 <!--******************************-->
 
 <node name="rviz" pkg="rviz" type="rviz" args="-d $(find nre_simmultihusky)/rviz/duohusky.rviz" output="screen"/>
-<node name="rqt_topic" pkg="rqt_topic" type="rqt_topic" output="screen" />
+<!--node name="rqt_topic" pkg="rqt_topic" type="rqt_topic" output="screen" /-->
 <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
 <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
 

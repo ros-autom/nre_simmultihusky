@@ -109,8 +109,8 @@
   </group>
 
   <!-- Or we could just set this as a static offset -->
-  <!--node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" /-->
-     
+  <!--<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg initX) $(arg initY) 0 $(arg initYaw) 0 0 /map /$(arg tfpre)/odom 100" />
+     -->
   <!-- Twister server for rviz control-->
  <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen">
    <param name="link_name" value="$(arg tfpre)/base_link" />
