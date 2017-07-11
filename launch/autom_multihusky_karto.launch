@@ -30,6 +30,7 @@
 			<arg name="initX" value="0" />
 			<arg name="initY" value="0" />
 			<arg name="laser_enabled" value="true"/>
+			<arg name="kinect_enabled" value="true" />
 			<arg name="initYaw" value="0" />
 		</include>
 
