@@ -29,7 +29,8 @@
 			<arg name="robot_namespace" value="robot_1" />
 			<arg name="initX" value="0" />
 			<arg name="initY" value="0" />
-			<arg name="laser_enabled" value="true"/>
+			<arg name="slam_laser_enabled" value="true"/>
+			<arg name="kinect_enabled" value="true"/>
 			<arg name="initYaw" value="0" />
 		</include>
 
@@ -65,9 +66,9 @@
 
 		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
 			<arg name="robot_namespace" value="robot_2" />
-			<arg name="initX" value="1" />
-			<arg name="initY" value="3" />
-			<arg name="laser_enabled" value="true"/>
+			<arg name="initX" value="0" />
+			<arg name="initY" value="-1" />
+			<arg name="slam_laser_enabled" value="true"/>
 			<arg name="initYaw" value="0" />
 		</include>
 
