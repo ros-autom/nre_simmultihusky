@@ -74,7 +74,7 @@
 		<param name="robot_frame" value="base_link"/>
 		<param name="map_service" value= "static_map"/>
 		<param name="min_map_size" value="100"/>
-    <param name="laser_topic" value="robot_2/scan" />
+    <param name="laser_topic" value="scan" />
 		<param name="offset_frame" value="offset"/>
 		<param name="tf_prefix" type="string" value="robot_2_tf"/>
 
