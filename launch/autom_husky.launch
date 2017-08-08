@@ -30,20 +30,14 @@
   <!-- The robot description tells Gazebo how to simulate
        the IMU, GPS and ground truth -->
 
-
-  <param name="robot_description" command="$(find xacro)/xacro '$(find husky_description)/urdf/husky.urdf.xacro'
-    --inorder
-    robot_namespace:=$(arg robot_namespace)
-    laser_enabled:=$(arg laser_enabled)
-    kinect_enabled:=$(arg kinect_enabled)
-    slam_laser_enabled:=$(arg slam_laser_enabled)
-
-
-    " />
+  <include file="$(find husky_description)/launch/description.launch">
+    <arg name="robot_namespace" default="$(arg robot_namespace)"/>
+    <arg name="laser_enabled" default="$(arg laser_enabled)"/>
+    <arg name="kinect_enabled" default="$(arg kinect_enabled)"/>
+    <arg name="slam_laser_enabled" default="$(arg slam_laser_enabled)"/>
+  </include>
 
 
-
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find husky_description)/urdf/husky.urdf.xacro' laser_enabled:=$(arg laser_enabled) kinect_enabled:=$(arg kinect_enabled) robot_namespace:=$(arg robot_namespace) tfpre:=$(arg tfpre)" />
   <!-- Note we set the "name" of the model in Gazebo using the robot_namespace -->
   <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
 	args="-x $(arg initX) -y $(arg initY) -Y $(arg initYaw) -unpause -urdf -param robot_description -model Husky_$(arg robot_namespace)"/>
