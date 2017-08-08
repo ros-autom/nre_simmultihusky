@@ -89,47 +89,9 @@
 	</group>
 
 
-
-	<!--group ns="robot_2">
-		<include file="$(find nre_simmultihusky)/launch/autom_husky.launch">
-			<arg name="robot_namespace" value="robot_2" />
-			<arg name="initX" value="1" />
-			<arg name="initY" value="3" />
-			<arg name="laser_enabled" value="true"/>
-			<arg name="initYaw" value="0" />
-		</include-->
-
-		<!--param name="robot_id" value="1" />
-		<param name="tf_prefix" type="string" value="robot_0"/>
-		<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/-->
-			<!--param name="robot_id" value="2" />
-		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen" >
-
-			<remap from="/scan" to="base_scan"/>
-			<remap from="karto_in" to="/shared_scans_r1"/>
-			<remap from="karto_out" to="/shared_scans_r2"/>
-			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
-		</node>
-	</group-->
-
-
-	<!--group ns="robot_1">
-
-		<param name="tf_prefix" type="string" value="robot_1"/>
-		<rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
-
-
-		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
-			<remap from="scan" to="base_scan"/>
-			<remap from="karto_in" to="/shared_scans_r1"/>
-			<remap from="karto_out" to="/shared_scans_r2"/>
-			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
-		</node>
-
-	</group-->
-
 	<!-- RVIZ to view the visualization -->
 	<node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
-	<node name="RVIZ" pkg="rviz" type="rviz" args=" -d $(find nav2d_tutorials)/param/tutorial4.rviz" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find nre_simmultihusky)/rviz/multi_husky_karto.rviz" output="screen"/>
+
 
 </launch>
