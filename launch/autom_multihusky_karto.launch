@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-
 	<!--node name="rqt_console" pkg="rqt_console" type="rqt_console" output="screen" /-->
 
 
@@ -50,6 +49,11 @@
 			<!--<remap from="scan" to="robot_1/scan"/>-->
 			<remap from="karto_in" to="/shared_scans_r2"/>
 			<remap from="karto_out" to="/shared_scans_r1"/>
+			<param name="instant_localization"	value="true"/>
+			<param name="init_pose_x"	value="0.0"/>
+			<param name="init_pose_y"	value="-1.0"/>
+			<param name="init_pose_z"	value="0.0"/>
+
 			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
 		</node>
 
@@ -79,10 +83,12 @@
 		<param name="tf_prefix" type="string" value="robot_2_tf"/>
 
 		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
-		<!--remap from="robot_1/scan" to="robot_1/base_scan"/-->
-					<!--remap from="scan" to="base_scan"/-->
-			<remap from="karto_in" to="/shared_scans_r1"/>
-			<remap from="karto_out" to="/shared_scans_r2"/>
+			<remap from="karto_in" to="/shared_scans_r2"/>
+			<remap from="karto_out" to="/shared_scans_r1"/>
+			<param name="instant_localization"	value="true"/>
+			<param name="init_pose_x"	value="0.0"/>
+			<param name="init_pose_y"	value="0.0"/>
+			<param name="init_pose_z"	value="0.0"/>
 			<rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
 		</node>
 
