@@ -83,8 +83,8 @@
 		<param name="tf_prefix" type="string" value="robot_2_tf"/>
 
 		<node name="Mapper" pkg="nav2d_karto" type="mapper" output="screen">
-			<remap from="karto_in" to="/shared_scans_r2"/>
-			<remap from="karto_out" to="/shared_scans_r1"/>
+			<remap from="karto_in" to="/shared_scans_r1"/>
+			<remap from="karto_out" to="/shared_scans_r2"/>
 			<param name="instant_localization"	value="true"/>
 			<param name="init_pose_x"	value="0.0"/>
 			<param name="init_pose_y"	value="0.0"/>
